@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lead Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h2>Leads by Source</h2>
+
+<canvas id="leadChart" width="400" height="200"></canvas>
+
+<script>
+    const dataFromBackend = [
+        {% for item in data %}
+            {
+                source: "{{ item.source }}",
+                count: {{ item.count }}
+            },
+        {% endfor %}
+    ];
+
+    const labels = dataFromBackend.map(d => d.source);
+    const values = dataFromBackend.map(d => d.count);
+
+    new Chart(document.getElementById('leadChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Number of Leads',
+                data: values
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>
